@@ -18,6 +18,3 @@ phases:
   post_build:
     commands:
       - echo Nothing to do in post build
-artifacts:
-  files:
-    -
