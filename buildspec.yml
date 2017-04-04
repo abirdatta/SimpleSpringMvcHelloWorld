@@ -14,7 +14,7 @@ phases:
       - docker login --username=abirdatta --email="abirdatta.in@gmail.com" --password="dockerhub123"
       - i=$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}');docker push abirdatta/poc:$i
       - echo Docker build and push done
-      - i=$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}');./update-ecs-cloudformation-stack.sh ECS-Stack 'https://s3.amazonaws.com/ecs-cloudformation-templates/ecs-stack-template.json' $i
+      - i=$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}');./update-ecs-cloudformation-stack.sh MyStack 'https://s3.amazonaws.com/ecs-cloudformation-templates/ecs-stack-template.json' $i
   post_build:
     commands:
       - echo Nothing to do in post build
