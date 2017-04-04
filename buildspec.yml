@@ -10,17 +10,14 @@ phases:
     commands:
       - echo Start build and push of DockerImage
       - echo Code build-id $CODEBUILD_BUILD_ID
-      - i=$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}');docker build -t abirdatta/poc:v$i .
+      - i=$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}');docker build -t abirdatta/poc:$i .
       - docker login --username=abirdatta --email="abirdatta.in@gmail.com" --password="dockerhub123"
-      - docker push abirdatta/poc
+      - i=$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}');docker push abirdatta/poc:$i
       - echo Docker build and push done
-      - d=$CODEBUILD_BUILD_ID; echo Variable d id $d
-      - echo Variable I is $i
-      - i=$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}');sed -e "s/\${BUILD_NUMBER}/$i/g" update-payload.json > payload.json
-      - messageText="$(cat payload.json)";aws sns publish --topic-arn $SNS_TOPIC_ARN --subject 'AWS CodeBuild - Build Completed' --message "${messageText}"
+      - i=$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}');./update-ecs-cloudformation-stack.sh ECS-Stack 'https://s3.amazonaws.com/ecs-cloudformation-templates/ecs-stack-template.json' $i
   post_build:
     commands:
       - echo Nothing to do in post build
 artifacts:
   files:
-    - payload.json
+    -
