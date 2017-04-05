@@ -1,38 +1,22 @@
 node {
    stage('Git Code Checkout') { // for display purposes
       // Get some code from a GitHub repository
-      git url: 'git@github.com:abirdatta/SimpleSpringMvcHelloWorld.git', branch: 'master'
+      git url: 'git@github.com:abirdatta/SimpleSpringMvcHelloWorld.git', branch: 'cloudformation-branch'
    }
-   stage('Perform Maven Build, Create and Push Docker Image') {
+   stage('Maven Build') {
       // Run the maven build
       echo "Starting Mvn build"
-      sh "mvn -s /etc/maven/settings.xml clean package docker:build -DpushImage"
+      sh "mvn clean package"
       echo "Finished Mvn build"
    }
-   stage("create the full stack for amazon ecs using LambdaFunction"){
-       invokeLambda([awsAccessKeyId: 'AKIAIH3T7KFY3ZQZYX7Q', awsRegion: 'us-east-1', awsSecretKey: '{AQAAABAAAAAwNpeFNC+H5t9tqwik2nWXLAMeQJld6/dzn6H02oF1IWUM7C2a9cY2GLb44BrOnVB20KDwcCI1TQ0yrybR0jzOGA==}', functionName: 'LambdaFunctionToCreateOrUpdateECS', payload: '''{
-  "updateOrCreate": "update",
-  "clusterName": "ecs-test-cluster",
-  "serviceName": "ecs-test-service",
-  "desiredCount": 1,
-  "containerDefinitions": [
-    {
-      "memory": 500,
-      "portMappings": [
-        {
-          "hostPort": 8888,
-          "containerPort": 8080,
-          "protocol": "tcp"
-        }
-      ],
-      "name": "ecs-test-container",
-      "image": "abirdatta/poc:v${BUILD_NUMBER}",
-      "essential": true,
-      "cpu": 1
-    }
-  ],
-  "family": "ecs-test"
-}''', synchronous: true])
-
+   stage("Create Docker image from DockerFile") {
+       sh "docker build -t abirdatta/poc:${BUILD_NUMBER} ."
+   }
+   stage("Login and Push Image to DockerHub") {
+       sh 'docker login --username=abirdatta --email="abirdatta.in@gmail.com" --password="dockerhub123"'
+       sh "docker push abirdatta/poc:${BUILD_NUMBER}"
+   }
+   stage("update cloudformation stack to update ECS"){
+       sh "./update-ecs-cloudformation-stack.sh MyStack 'https://s3.amazonaws.com/ecs-cloudformation-templates/ecs-stack-template.json' ${BUILD_NUMBER}"
    }
 }
