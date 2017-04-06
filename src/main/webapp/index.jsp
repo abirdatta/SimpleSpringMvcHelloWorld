@@ -8,7 +8,7 @@
 <body>
  
 	<center>
-		<h2>Hello world ---> Updating Cloudformation stack using jenkins pipeline</h2>
+		<h2>Hello world ---> Updating Cloudformation stack using aws codepipeline and aws codebuild</h2>
 		<h3>
 			<a href="hello?name=User">Click Here</a>
 		</h3>
