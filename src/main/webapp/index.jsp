@@ -8,7 +8,7 @@
 <body>
  
 	<center>
-		<h2>Hello world - Using AWS Codepipeline-demo-for updating ecs cluster service</h2>
+		<h2>Hello World</h2>
 		<h3>
 			<a href="hello?name=User">Click Here</a>
 		</h3>
