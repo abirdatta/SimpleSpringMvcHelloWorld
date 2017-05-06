@@ -15,7 +15,7 @@
       "spec": {
         "containers": [{
           "name": "simple-app",
-          "image": "abirdatta/poc:4",
+          "image": "abirdatta/poc:v%BUILD_NUMBER%",
           "ports": [{
             "containerPort": 8080
           }]
