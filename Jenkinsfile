@@ -16,7 +16,7 @@ node {
        sh 'docker login --username=abirdatta --email="abirdatta.in@gmail.com" --password="dockerhub123"'
        sh "docker push abirdatta/poc:v${BUILD_NUMBER}"
    }
-   stage("re-register Amazon ecs task and update amazon ecs"){
+   stage("Invoke Openwhisk api, action to perform bx container service kube cluster update"){
        sh "./update-bx-kube-cluster.sh"
    }
 }

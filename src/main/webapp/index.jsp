@@ -8,7 +8,7 @@
 <body>
  
 	<center>
-		<h2>Updated bx container service using openwhisk action.</h2>
+		<h2>App deployed in BX container service on Kubernetes cluster.</h2>
 		<h3>
 			<a href="hello?name=User">Click Here</a>
 		</h3>
