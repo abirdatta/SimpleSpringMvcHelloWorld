@@ -1,0 +1,26 @@
+{
+  "apiVersion": "extensions/v1beta1",
+  "kind": "Deployment",
+  "metadata": {
+    "name": "simple-app-deployment"
+  },
+  "spec": {
+    "replicas": 2, 
+    "template": { 
+      "metadata": {
+        "labels": {
+          "app": "simple-app"
+        }
+      },
+      "spec": {
+        "containers": [{
+          "name": "simple-app",
+          "image": "abirdatta/poc:4",
+          "ports": [{
+            "containerPort": 8080
+          }]
+         }]
+      }
+    }
+  }
+}
